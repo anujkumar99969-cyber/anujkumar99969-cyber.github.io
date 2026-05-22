@@ -130,7 +130,9 @@ button:hover{background:#1d4ed8}
  <div class="card">
     <h2>Subscription Amount</h2>
     <div class="price">₹2000</div>
-    <button onclick="payNow('products')">Pay Amount</button>
+    <button onclick="payNow('Subscription', 2000)">
+    Pay Amount
+</button>
   </div>
 
 <!-- Payment Popup -->
@@ -151,24 +153,38 @@ button:hover{background:#1d4ed8}
 let amount = 0;
 let productName = '';
 
-const upiId = "Kumaranuj83041@ybl"; // 🔴 Replace with your real UPI ID
-const payeeName = "MyShop";
+const upiId = "Kumaranuj83041@ybl"; // your UPI ID
+const payeeName = "Anuj Kumar";
 
 function payNow(name, price){
-  amount = price;
-  productName = name;
-  document.getElementById('paymentText').innerText = `Pay ₹${price} for ${name}`;
-  document.getElementById('popup').style.display='flex';
+    amount = price;
+    productName = name;
+
+    document.getElementById("paymentText").innerText =
+        `Pay ₹${price} for ${name}`;
+
+    document.getElementById("popup").style.display = "flex";
 }
 
 function closePopup(){
-  document.getElementById('popup').style.display='none';
+    document.getElementById("popup").style.display = "none";
 }
 
 function openUPI(){
-  const note = `Payment for ${productName}`;
-  const url = `upi://pay?pa=${upiId}&pn=${payeeName}&am=${amount}&cu=INR&tn=${note}`;
-  window.location.href = url;
+
+    if(!amount){
+        alert("Invalid amount");
+        return;
+    }
+
+    const note = encodeURIComponent(
+        `Payment for ${productName}`
+    );
+
+    const url =
+`upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${note}`;
+
+    window.open(url, "_self");
 }
 </script>
 
